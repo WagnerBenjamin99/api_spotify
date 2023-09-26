@@ -1,14 +1,12 @@
 const { Router } = require('express');
-const { getEstrenos, getPeliculas, getActores, getPelicula, getOrigenNombre } = require('../controllers/demo');
+const {  helloWorld, getArtist, getPlaylistTracks } = require('../controllers/demo');
 
 const rutas = Router();
 
-rutas.get('/peliculas', getPeliculas);
-rutas.get('/pelicula/:id', getPelicula);
+rutas.get('', helloWorld);
 
-rutas.get('/estrenos', getEstrenos);
-rutas.get('/actores', getActores);
-rutas.get('/nombre/:name', getOrigenNombre);
+rutas.get('/artist/:id', getArtist);
+rutas.get('/playlist/:id', getPlaylistTracks);
 
 
 module.exports = rutas;
