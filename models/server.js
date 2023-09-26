@@ -3,7 +3,7 @@ const cors = require('cors')
 class Server{
     
     constructor(){
-        this.port = process.env.PORT || 3000;
+        this.port = process.env.PORT || 8000;
 
         this.app = express();
         
@@ -29,7 +29,7 @@ class Server{
             res.send('Home');
         }); */
 
-        this.app.use('/api/v1/demo', require('../routes/demo'));
+        this.app.use('/api/v1/', require('../routes/demo'));
     }
 
 
@@ -40,5 +40,4 @@ class Server{
     }
 
 }
-
 module.exports = Server;
