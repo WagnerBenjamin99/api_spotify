@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios').default;
 const { request, response} = require('express');
 const { getAuthFromClientCredentials } = require('../controllers/spotify-auth.js');
 
