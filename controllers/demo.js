@@ -83,18 +83,10 @@ const getGenresRecomendation = async (req = request, res = response) => {
     });
    
 }
-//obtener podcast
-const getEpisodes = async (req = request, res = response) => {    
-  const access_token = await getAuthFromClientCredentials();    
-  
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
-  
-  
+
+   
   const episodes_Id = req.params['id'];
+  console.log(episodes_Id);
 
   axios.get(`https://api.spotify.com/v1/episodes/${episodes_Id}`, config)
     .then((response) => {
@@ -109,7 +101,7 @@ const getEpisodes = async (req = request, res = response) => {
       console.error('Error al obtener datos del podcast:', error);
     });
   
-}
+
 
 
 
@@ -148,7 +140,7 @@ const getAudiobook = async (req = request, res = response) => {
 
   const audioBook_id = req.params["id"];
 
-  axios.get(`https://api.spotify.com/v1/audiobooks/${id}`, config)
+  axios.get(`https://api.spotify.com/v1/audiobooks/${audioBook_id}`, config)
   .then((response) => {
     const audioBookData = response.data;
     console.log('Datos del audiobook:', audioBookData);
@@ -167,7 +159,6 @@ module.exports = {
   getArtist, 
   getPlaylistTracks,
   getGenresRecomendation,
-  getEpisodes,
   getAlbumesTracks,
   getAudiobook
 

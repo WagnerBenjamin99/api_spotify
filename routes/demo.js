@@ -11,11 +11,9 @@ rutas.get('', helloWorld);
 
 rutas.get('/artist/:id', getArtist);
 rutas.get('/playlist/:id', getPlaylistTracks);
-
 rutas.get('/recommendations/available-genre-seeds', getGenresRecomendation);
-rutas.get('/episodes/:id', getEpisodes);
 rutas.get('/albums/:id', getAlbumesTracks);
-rutas.get('/audiolibros/:id', getAudiobook)
+rutas.get('/audiolibros/:id', getAudiobook);
 
 
 module.exports = rutas;
