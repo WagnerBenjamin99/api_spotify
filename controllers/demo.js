@@ -29,8 +29,7 @@ const getArtist = async (req = request, res = response) => {
       res.status(200).json(artistData);
     })
     .catch((error) => {
-      res.status(404);
-      console.error('Error al obtener datos del artista:', error);
+      res.status(404).json('Error al obtener datos del artista:', error);
     });
   
 }
@@ -53,10 +52,10 @@ const getPlaylistTracks = async (req = request, res = response) => {
     .then((response) => {
       const playlistTracks = response.data;
       console.log('Playlist tracks', playlistTracks);
-      res.status(200).playlistTracks;
+      res.status(200).json(playlistTracks);
     })
     .catch((error) => {
-      res.status(404);
+   
       console.error('Error al obtener datos del artista:', error);
     });
   
