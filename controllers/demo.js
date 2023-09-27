@@ -80,10 +80,11 @@ const getNameDescriptionFromPlaylist = async (req, res) => {
   try {
     const config = await getAuthFromClientCredentials();
 
+    const playlist_id = req.params['id'];
     const fields = req.query.fields;
     const market = req.query.market;
 
-    const response = await axios.get(`https://api.spotify.com/v1/playlists/3cEYpjA9oz9GiPac4AsH4n?market=${market}&fields=${fields}`, config);
+    const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}?market=${market}&fields=${fields}`, config);
 
     const { name, description } = response.data;
     res.status(200).json({ name, description });
