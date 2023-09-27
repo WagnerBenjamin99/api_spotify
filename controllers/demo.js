@@ -3,7 +3,7 @@ const { request, response} = require('express');
 const { getAuthFromClientCredentials } = require('../controllers/spotify-auth.js');
 
 
-
+//artist
 const getArtist = async (req = request, res = response) => {    
   const access_token = await getAuthFromClientCredentials();    
   
@@ -19,8 +19,6 @@ const getArtist = async (req = request, res = response) => {
   axios.get(`https://api.spotify.com/v1/artists/${artistId}`, config)
     .then((response) => {
       const artistData = response.data;
-      console.log('Datos del artista:', artistData);
-      //res.end( JSON.stringify(artistData));
   
       res.status(200).json(artistData);
     })
@@ -30,8 +28,8 @@ const getArtist = async (req = request, res = response) => {
   
 }
 
-//Tracks
 
+//Playlist tracks
 const getPlaylistTracks = async (req = request, res = response) => {    
   const access_token = await getAuthFromClientCredentials();    
   
@@ -56,6 +54,7 @@ const getPlaylistTracks = async (req = request, res = response) => {
     });
    
 }
+
 //semillas-de-genero-disponibles
 const getGenresRecomendation = async (req = request, res = response) => {    
   const access_token = await getAuthFromClientCredentials();    
@@ -81,7 +80,7 @@ const getGenresRecomendation = async (req = request, res = response) => {
 }
 
 
-//obtener albumes de artista
+//artist albums
 const getArtistAlbums = async (req = request, res = response) => {    
   const access_token = await getAuthFromClientCredentials();    
   
@@ -108,6 +107,7 @@ const getArtistAlbums = async (req = request, res = response) => {
     });
 }
 
+//album tracks
 const getAlbumesTracks = async (req = request, res = response) => {
   const access_token = await getAuthFromClientCredentials();
 
