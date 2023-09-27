@@ -1,6 +1,6 @@
 ## Mi primera app en node.js con exprees
 Integración con la API de Spotify
-Esta aplicación Node.js proporciona integración con la API de Spotify para obtener información sobre artistas, listas de reproducción, géneros, álbumes y pistas. Utiliza la biblioteca Axios para realizar solicitudes a la API y Express.js para el enrutamiento. A continuación, se presenta una breve descripción de los puntos finales disponibles y cómo utilizarlos.
+Esta aplicación Node.js proporciona integración con la API de Spotify para obtener información sobre artistas, listas de reproducción, géneros, álbumes y pistas. Utiliza la biblioteca Axios para realizar solicitudes a la API y Express.js para el enrutamiento. A continuación, se presenta una breve descripción de los endpoints disponibles y cómo utilizarlos.
 
 
 
@@ -9,7 +9,7 @@ Esta aplicación Node.js proporciona integración con la API de Spotify para obt
 Endpoint:
 /api/artist/:id
 Descripción:
-Obtener información sobre un artista específico en Spotify.
+Obtener información sobre un artista especifico en Spotify.
 
 Ejemplo:
 Solicitud:
@@ -17,7 +17,7 @@ GET /api/artist/id-del-artista
 
 Respuesta:
 {
-  "artistData": { ... }
+  "artistData": { ... } 
 }
 
 ## Obtener Canciones de una Lista de Reproducción
