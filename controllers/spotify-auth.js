@@ -5,16 +5,6 @@ const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
 const url = 'https://accounts.spotify.com/api/token';
 
-var authOptions = {
-  headers: {
-    'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
-  },
-  form: {
-    grant_type: 'client_credentials'
-  },
-  json: true
-};
-
 const getAuthFromClientCredentials = async () => {
 
   try {
@@ -27,7 +17,13 @@ const getAuthFromClientCredentials = async () => {
         }
       }
     )    
-    return data.access_token || '';
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${data.access_token}`
+      }
+    };
+    
+    return config || '';
   } catch (error) {      
       return false;
   }
