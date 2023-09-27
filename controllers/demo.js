@@ -59,12 +59,66 @@ const getPlaylistTracks = async (req = request, res = response) => {
       res.status(404);
       console.error('Error al obtener datos del artista:', error);
     });
+   
+}
+//semillas-de-genero-disponibles
+const getGenresRecomendation = async (req = request, res = response) => {    
+  const access_token = await getAuthFromClientCredentials();    
+  
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  };
+   
+    
+  axios.get(`https://api.spotify.com/v1/recommendations/available-genre-seeds`, config)
+    .then((response) => {
+      const genres_recomended = response.data;
+      console.log('Genres Recomended', genres_recomended);
+      res.status(200).json(genres_recomended);
+    })
+    .catch((error) => {
+      res.status(404);
+      console.error('Error al obtener el Genero Musical:', error);
+    });
+   
+}
+//obtener podcast
+const getEpisodes = async (req = request, res = response) => {    
+  const access_token = await getAuthFromClientCredentials();    
+  
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${access_token}`
+    }
+  };
+  
+  
+  const episodes_Id = req.params['id'];
+
+  axios.get(`https://api.spotify.com/v1/episodes/${episodes_Id}`, config)
+    .then((response) => {
+      const episodesData = response.data;
+      console.log('Podcast:', episodesData);
+      //res.end( JSON.stringify(artistData));
+  
+      res.status(200).json(episodesData);
+    })
+    .catch((error) => {
+      res.status(404);
+      console.error('Error al obtener datos del podcast:', error);
+    });
   
 }
+
+
 
 module.exports = {
   helloWorld,
   getArtist, 
-  getPlaylistTracks
+  getPlaylistTracks,
+  getGenresRecomendation,
+  getEpisodes
 }
 
