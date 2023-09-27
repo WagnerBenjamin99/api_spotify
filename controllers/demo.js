@@ -22,8 +22,7 @@ const getNameDescriptionFromPlaylist = async (req, res) => {
     const config = await getAuthFromClientCredentials();
 
     const playlist_id = req.params['id'];
-    const fields = req.query.fields;
-    const market = req.query.market;
+    const { fields, market } = req.query;
 
     const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}?market=${market}&fields=${fields}`, config);
 
@@ -37,14 +36,7 @@ const getNameDescriptionFromPlaylist = async (req, res) => {
 
 //artist
 const getArtist = async (req = request, res = response) => {    
-  const access_token = await getAuthFromClientCredentials();    
-  
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
-  
+  const config = await getAuthFromClientCredentials();    
   
   const artistId = req.params['id'];
 
@@ -63,14 +55,7 @@ const getArtist = async (req = request, res = response) => {
 
 //Playlist tracks
 const getPlaylistTracks = async (req = request, res = response) => {    
-  const access_token = await getAuthFromClientCredentials();    
-  
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
-  
+  const config = await getAuthFromClientCredentials();    
   
   const playlist_id = req.params['id']; 
   
@@ -89,14 +74,7 @@ const getPlaylistTracks = async (req = request, res = response) => {
 
 //semillas-de-genero-disponibles
 const getGenresRecomendation = async (req = request, res = response) => {    
-  const access_token = await getAuthFromClientCredentials();    
-  
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
-   
+  const config = await getAuthFromClientCredentials();       
     
   axios.get(`https://api.spotify.com/v1/recommendations/available-genre-seeds`, config)
     .then((response) => {
@@ -114,14 +92,7 @@ const getGenresRecomendation = async (req = request, res = response) => {
 
 //artist albums
 const getArtistAlbums = async (req = request, res = response) => {    
-  const access_token = await getAuthFromClientCredentials();    
-  
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
-  
+  const config = await getAuthFromClientCredentials();    
   
   const artist_Id = req.params['id'];
 
@@ -141,13 +112,7 @@ const getArtistAlbums = async (req = request, res = response) => {
 
 //album tracks
 const getAlbumesTracks = async (req = request, res = response) => {
-  const access_token = await getAuthFromClientCredentials();
-
-  const config = {
-    headers: {
-      'Authorization': `Bearer ${access_token}`
-    }
-  };
+  const config = await getAuthFromClientCredentials();
 
   const album_id = req.params["id"];
 
