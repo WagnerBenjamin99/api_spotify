@@ -16,7 +16,8 @@ const getArtist = async (req = request, res = response) => {
   
   const artistId = req.params['id'];
 
-  axios.get(`https://api.spotify.com/v1/artists/${artistId}`, config)
+  
+  await axios.get(`https://api.spotify.com/v1/artists/${artistId}`, config)
     .then((response) => {
       const artistData = response.data;
   
