@@ -76,7 +76,7 @@ const getAlbumesTracks = async (req = request, res = response) => {
   .then((response) => {
     const albumTracks = response.data;
     console.log('Datos del album:', albumTracks);
-    res.status(200).albumTracks;
+    res.status(200).json(albumTracks);
   })
   .catch((error) => {
     res.status(404);
@@ -100,7 +100,7 @@ const getAudiobook = async (req = request, res = response) => {
   .then((response) => {
     const audioBookData = response.data;
     console.log('Datos del audiobook:', audioBookData);
-    res.status(200).audioBookData;
+    res.status(200).json(audioBookData);
   })
   .catch((error) => {
     res.status(404);
