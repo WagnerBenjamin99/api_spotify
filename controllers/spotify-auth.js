@@ -17,10 +17,12 @@ const getAuthFromClientCredentials = async () => {
         }
       }
     )    
+    console.log("DATA:" + data);
     const config = {
       headers: {
         'Authorization': `Bearer ${data.access_token}`
       }
+      
     };
     
     return config || '';

@@ -38,6 +38,7 @@ const getNameDescriptionFromPlaylist = async (req, res) => {
 //artist
 const getArtist = async (req = request, res = response) => {    
   const config = await getAuthFromClientCredentials();    
+  console.log(config);
   
   const artistId = req.params['id'];
 
