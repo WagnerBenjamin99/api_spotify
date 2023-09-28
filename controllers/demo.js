@@ -1,4 +1,4 @@
-const axios = require('axios');
+const axios = require('axios').default;
 const { request, response} = require('express');
 const { getAuthFromClientCredentials } = require('../controllers/spotify-auth.js');
 
@@ -47,7 +47,8 @@ const getArtist = async (req = request, res = response) => {
       res.status(200).json(artistData);
     })
     .catch((error) => {
-      res.status(404).json('Error al obtener datos del artista:', error);
+      console.error('Error al obtener datos del artista:', error);
+      res.status(500).json({ error: 'Error al obtener datos del artista' });
     });
   
 }
@@ -66,10 +67,10 @@ const getPlaylistTracks = async (req = request, res = response) => {
       res.status(200).json(playlistTracks);
     })
     .catch((error) => {
-   
-      console.error('Error al obtener datos del artista:', error);
+      console.error('Error al obtener datos de la lista de reproducción:', error);
+      res.status(500).json({ error: 'Error al obtener datos de la lista de reproducción' });
     });
-   
+    
 }
 
 //semillas-de-genero-disponibles
