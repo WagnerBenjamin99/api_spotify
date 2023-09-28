@@ -17,6 +17,7 @@ const getAlbums = async (req, res) => {
   }
 }
 
+
 const getNameDescriptionFromPlaylist = async (req, res) => {    
   try {
     const config = await getAuthFromClientCredentials();
@@ -130,6 +131,22 @@ const getAlbumesTracks = async (req = request, res = response) => {
 
 }
 
+const filterGenre = async (req = request, res = response) => {
+  const config = await getAuthFromClientCredentials();
+  const genre = req.query['genre'];
+
+  axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, config)
+  .then((response) => {
+    res.status(200).json(response.data.tracks);
+  })
+  .catch((error) => {
+    res.status(404);
+    console.error('Error al procesar su busqueda ', error)
+  })
+
+
+}
+
 
 
 module.exports = {
@@ -139,5 +156,6 @@ module.exports = {
   getArtistAlbums,
   getAlbumesTracks,
   getAlbums,
-  getNameDescriptionFromPlaylist
+  getNameDescriptionFromPlaylist, 
+  filterGenre
 }

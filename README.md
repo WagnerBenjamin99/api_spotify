@@ -5,15 +5,31 @@ Esta aplicación Node.js proporciona integración con la API de Spotify para obt
 
 
 ## ENDPOINTS
+
+## Obtener informacion de un album
+Endpoint:
+/api/v1/albums/id_del_album
+Description:
+Obtener informacion especifica de un album de spotify.
+
+Ejemplo:
+Solicitud:
+GET /api/v1/albums/id_del_album
+
+Respuesta:
+{
+  "albumData": { ... }
+}
+
 ## Obtener Información de un Artista
 Endpoint:
-/api/artist/:id
+/api/v1/artist/:id
 Descripción:
 Obtener información sobre un artista especifico en Spotify.
 
 Ejemplo:
 Solicitud:
-GET /api/artist/id-del-artista
+GET /api/v1/artist/id-del-artista
 
 Respuesta:
 {
@@ -22,13 +38,13 @@ Respuesta:
 
 ## Obtener Canciones de una Lista de Reproducción
 Endpoint:
-/api/playlist/:id/tracks
+/api/v1/playlist/:id/tracks
 Descripción:
 Obtener canciones de una lista de reproducción específica de Spotify.
 
 Ejemplo:
 Solicitud:
-GET /api/playlist/id-de-la-lista-de-reproduccion/tracks
+GET /api//v1/playlist/id_de_la_lista_de_reproduccion/tracks
 
 Respuesta:
 {
@@ -43,7 +59,7 @@ Obtener una lista de géneros musicales recomendados de Spotify.
 
 Ejemplo:
 Solicitud:
-GET /api/genres/recommended
+GET /api/v1/genres/recommended
 
 Respuesta:
 {
@@ -52,13 +68,13 @@ Respuesta:
 
 ## Obtener Álbumes de un Artista
 Endpoint:
-/api/artist/:id/albums
+/api/v1/artist/:id/albums
 Descripción:
 Obtener álbumes de un artista específico en Spotify.
 
 Ejemplo:
 Solicitud:
-GET /api/artist/id-del-artista/albums
+GET /api/v1/artist/id_del_artista/albums
 
 Respuesta:
 {
@@ -67,15 +83,31 @@ Respuesta:
 
 ## Obtener Canciones de un Álbum
 Endpoint:
-/api/album/:id/tracks
+/api/v1/album/:id/tracks
 Descripción:
 Obtener canciones de un álbum específico de Spotify.
 
 Ejemplo:
 Solicitud:
-GET /api/album/id-del-album/tracks
+GET /api/v1/album/id-del-album/tracks
 
 Respuesta:
 {
   "albumTracks": { ... }
+}
+
+## Obtener canciones filtradas por genero
+
+Endpoint:
+/api/v1/?genre=genero_que_desea_filtrar
+Descripcion:
+Obtener canciones filtrando por el genero que desea, busqueda realizada en spotify.
+
+Ejemplo:
+Solicitud:
+GET /api/v1/?genre=genero_que_desea_filtrar
+
+Respuesta:
+{
+  "tracks" : { ... }
 }
