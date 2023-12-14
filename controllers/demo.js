@@ -2,32 +2,30 @@ const axios = require('axios');
 const { request, response} = require('express');
 const { getAuthFromClientCredentials } = require('../controllers/spotify-auth.js');
 
-//albums
+//conseguir al azar una cantidad especifica de albums - diego antonio
 const getAlbums = async (req, res) => {    
   try {
     const config = await getAuthFromClientCredentials();    
 
-    const albums_id = req.params['id']; 
+    const cantidadAlbums = req.params["quantity"]; 
   
-    const response = await axios.get(`https://api.spotify.com/v1/albums/${albums_id}`, config);
+    const response = await axios.get(`https://api.spotify.com/v1/browse/new-releases?limit=${cantidadAlbums}`, config);
     res.status(200).json(response);
   } catch (error) {
     console.error('Error en la solicitud:', error);
     res.status(500).json({ error: 'Error en la solicitud' });
   }
 }
-
-const getNameDescriptionFromPlaylist = async (req, res) => {    
+// conseguir solo los mejores 5 artistas - diego antonio
+const getTopArtists = async (req, res) => {
   try {
-    const config = await getAuthFromClientCredentials();
-
-    const playlist_id = req.params['id'];
-    const { fields, market } = req.query;
-
-    const response = await axios.get(`https://api.spotify.com/v1/playlists/${playlist_id}?market=${market}&fields=${fields}`, config);
-
-    const { name, description } = response.data;
-    res.status(200).json({ name, description });
+    const config = await getAuthFromClientCredentials(); 
+    
+    const cantidadArtists = 5;
+    
+    const response = await axios.get(`https://api.spotify.com/v1/me/top/artists?limit=${cantidadArtists}`, config);
+    
+    res.status(200).json(response.data); 
   } catch (error) {
     console.error('Error en la solicitud:', error);
     res.status(500).json({ error: 'Error en la solicitud' });
@@ -138,5 +136,5 @@ module.exports = {
   getArtistAlbums,
   getAlbumesTracks,
   getAlbums,
-  getNameDescriptionFromPlaylist
+  getTopArtists
 }
