@@ -133,17 +133,35 @@ const filterGenre = async (req = request, res = response) => {
   const config = await getAuthFromClientCredentials();
   const genre = req.query['genre'];
 
-  axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, config)
-  .then((response) => {
-    res.status(200).json(response.data.tracks);
-  })
-  .catch((error) => {
-    res.status(404);
-    console.error('Error al procesar su busqueda ', error)
-  })
+axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, config)
+    .then(response => {
+      if (response.status !== 200) {
+        console.log("Error al procesar la respuesta");
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
+      const data = response.data;
+      if (data.tracks && data.tracks.items) {
+        const pistas = data.tracks.items;
+        const resultado = pistas.map(pista => ({
+          nombre: pista.name,
+          artistas: pista.artists.map(artist => artist.name),
+          album: pista.album.name,
+          imagen: pista.album.images.length > 0 ? pista.album.images[0].url : null,
+        }));
+        console.log(resultado)
+        res.status(200).json(resultado);
+      } else {
+        console.log("No se encontraron pistas para el género especificado.");
+        res.status(404).json({ error: "No se encontraron pistas para el género especificado." });
+      }
+    })
+    .catch(error => {
+      console.error('Error al procesar su búsqueda', error);
+      res.status(500).json({ error: 'Error al procesar su búsqueda' });
+    });
+};
 
-}
 
 
 

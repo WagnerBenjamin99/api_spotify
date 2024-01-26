@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { getArtist, getPlaylistTracks, getAlbums, getTopArtists,getGenresRecomendation,getArtistAlbums,getAlbumesTracks } = require('../controllers/demo');
+const { getArtist, getPlaylistTracks, getAlbums, getTopArtists,getGenresRecomendation,getArtistAlbums,getAlbumesTracks, filterGenre } = require('../controllers/demo');
 
 
 
