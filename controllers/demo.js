@@ -154,5 +154,6 @@ module.exports = {
   getArtistAlbums,
   getAlbumesTracks,
   getAlbums,
-  getTopArtists
+  getTopArtists,
+  filterGenre
 }
