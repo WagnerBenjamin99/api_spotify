@@ -2,30 +2,58 @@ const axios = require('axios').default;
 const { request, response} = require('express');
 const { getAuthFromClientCredentials } = require('../controllers/spotify-auth.js');
 
-//conseguir al azar una cantidad especifica de albums - diego antonio
+//devolver una cantidad de albums actuales - diego antonio
 const getAlbums = async (req, res) => {    
   try {
+
     const config = await getAuthFromClientCredentials();    
 
-    const cantidadAlbums = req.params["quantity"]; 
+    // confirmo que la configuracion de autenticacion no sea una variable vacia 
+    if (!config) {
+      throw new Error('Error al obtener la configuracion de autenticacion');
+    }
   
-    const response = await axios.get(`https://api.spotify.com/v1/browse/new-releases?limit=${cantidadAlbums}`, config);
-    res.status(200).json(response);
+    const response = await axios.get('https://api.spotify.com/v1/browse/new-releases', config);
+
+    const totalAlbums = response.data.albums.items;
+    
+    res.status(200).json(totalAlbums);
   } catch (error) {
     console.error('Error en la solicitud:', error);
     res.status(500).json({ error: 'Error en la solicitud' });
   }
 }
+
 // conseguir solo los mejores 5 artistas - diego antonio
 const getTopArtists = async (req, res) => {
   try {
-    const config = await getAuthFromClientCredentials(); 
+    const config = await getAuthFromClientCredentials();
     
-    const cantidadArtists = 5;
+    // confirmo que la configuracion de autenticacion no sea una variable vacia 
+    if (!config) {
+      throw new Error('Error al obtener la configuracion de autenticacion');
+    }
+
+    const cantidadArtistas = 5;
     
-    const response = await axios.get(`https://api.spotify.com/v1/me/top/artists?limit=${cantidadArtists}`, config);
-    
-    res.status(200).json(response.data); 
+    // Obtengo la mejor lista
+    const playlistResponse = await axios.get('https://api.spotify.com/v1/browse/categories/toplists/playlists', config);
+    const playlistId = playlistResponse.data.playlists.items[0].id;
+
+    // obtengo las canciones de esa lista
+    const playlistDetailsResponse = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, config);
+    const tracks = playlistDetailsResponse.data.tracks.items;
+
+    // saco los href de cada cancion
+    const artistHrefs = tracks.slice(0, cantidadArtistas).map(item => item.track.artists[0].href);
+
+    // solicito los href de los artistas que estan en la toplist
+    const detailedArtists = await Promise.all(artistHrefs.map(href => axios.get(href, config)));
+
+    // saco los datos de cada artista de la toplist
+    const topArtists = detailedArtists.map(response => response.data);
+
+    res.status(200).json(topArtists);
   } catch (error) {
     console.error('Error en la solicitud:', error);
     res.status(500).json({ error: 'Error en la solicitud' });
@@ -71,24 +99,6 @@ const getPlaylistTracks = async (req = request, res = response) => {
     });
     
 }
-
-//semillas-de-genero-disponibles
-const getGenresRecomendation = async (req = request, res = response) => {    
-  const config = await getAuthFromClientCredentials();       
-    
-  axios.get(`https://api.spotify.com/v1/recommendations/available-genre-seeds`, config)
-    .then((response) => {
-      const genres_recomended = response.data;
-      console.log('Genres Recomended', genres_recomended);
-      res.status(200).json(genres_recomended);
-    })
-    .catch((error) => {
-      res.status(404);
-      console.error('Error al obtener el Genero Musical:', error);
-    });
-   
-}
-
 
 //artist albums
 const getArtistAlbums = async (req = request, res = response) => {    
@@ -162,13 +172,9 @@ axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, confi
     });
 };
 
-
-
-
 module.exports = {
   getArtist, 
   getPlaylistTracks,
-  getGenresRecomendation,
   getArtistAlbums,
   getAlbumesTracks,
   getAlbums,
