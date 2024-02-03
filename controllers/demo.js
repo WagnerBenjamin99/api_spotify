@@ -29,31 +29,37 @@ const getTopArtists = async (req, res) => {
   try {
     const config = await getAuthFromClientCredentials();
     
-    // confirmo que la configuracion de autenticacion no sea una variable vacia 
     if (!config) {
       throw new Error('Error al obtener la configuracion de autenticacion');
     }
 
     const cantidadArtistas = 5;
     
-    // Obtengo la mejor lista
     const playlistResponse = await axios.get('https://api.spotify.com/v1/browse/categories/toplists/playlists', config);
     const playlistId = playlistResponse.data.playlists.items[0].id;
 
-    // obtengo las canciones de esa lista
     const playlistDetailsResponse = await axios.get(`https://api.spotify.com/v1/playlists/${playlistId}`, config);
     const tracks = playlistDetailsResponse.data.tracks.items;
 
-    // saco los href de cada cancion
-    const artistHrefs = tracks.slice(0, cantidadArtistas).map(item => item.track.artists[0].href);
+    const uniqueArtistsSet = new Set();
+    const topArtists = [];
 
-    // solicito los href de los artistas que estan en la toplist
-    const detailedArtists = await Promise.all(artistHrefs.map(href => axios.get(href, config)));
+    for (const item of tracks) {
+      const artistHref = item.track.artists[0].href;
 
-    // saco los datos de cada artista de la toplist
-    const topArtists = detailedArtists.map(response => response.data);
+      if (!uniqueArtistsSet.has(artistHref)) {
+        uniqueArtistsSet.add(artistHref);
+        topArtists.push(artistHref);
 
-    res.status(200).json(topArtists);
+        if (topArtists.length === cantidadArtistas) {
+          break;
+        }
+      }
+    }
+
+    const detailedArtists = await Promise.all(topArtists.map(href => axios.get(href, config)));
+
+    res.status(200).json(detailedArtists.map(response => response.data));
   } catch (error) {
     console.error('Error en la solicitud:', error);
     res.status(500).json({ error: 'Error en la solicitud' });
