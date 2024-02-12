@@ -1,16 +1,17 @@
 const { Router } = require('express');
 
-const { getArtist, getPlaylistTracks, getAlbums, getTopArtists, getArtistAlbums, getAlbumesTracks, filterGenre } = require('../controllers/demo');
+const { getArtist, getPlaylistTracks, getAlbums, getTopArtists, getArtistAlbumes, getAlbumTracks,filterGenre } = require('../controllers/demo');
 
 
 const rutas = Router();
 
-rutas.get('/artist/:id', getArtist);
-rutas.get('/playlist/:id', getPlaylistTracks);
-rutas.get('/artistas-top', getTopArtists);
-rutas.get('/albums-actuales', getAlbums);
-rutas.get('/artist/:id/albums', getArtistAlbums);
-rutas.get('/albums/:id', getAlbumesTracks);
-rutas.get('/track', filterGenre);
+rutas.get('/artist/:id', getArtist); // Benja
+rutas.get('/playlist/:id', getPlaylistTracks); // Benja
+rutas.get('/artistas-top', getTopArtists); // Diego
+rutas.get('/albums-actuales', getAlbums); // Diego
+rutas.get('/artistas/:id/albums', getArtistAlbumes); // Emi
+rutas.get('/albums/:id/tracks', getAlbumTracks); // Emi
+rutas.get('/track', filterGenre); // Benja
+
 
 module.exports = rutas;

@@ -24,6 +24,7 @@ const getAlbums = async (req, res) => {
   }
 }
 
+
 // conseguir solo los mejores 5 artistas - diego antonio
 const getTopArtists = async (req, res) => {
   try {
@@ -106,44 +107,7 @@ const getPlaylistTracks = async (req = request, res = response) => {
     
 }
 
-//artist albums
-const getArtistAlbums = async (req = request, res = response) => {    
-  const config = await getAuthFromClientCredentials();    
-  
-  const artist_Id = req.params['id'];
-
-  axios.get(`https://api.spotify.com/v1/artist/${artist_Id}/albums `, config)
-    .then((response) => {
-      const albumesData = response.data;
-      console.log('Albumes del artista:', albumesData);
-      //res.end( JSON.stringify(artistData));
-  
-      res.status(200).json(albumesData);
-    })
-    .catch((error) => {
-      res.status(404);
-      console.error('Error al obtener datos de los albumes:', error);
-    });
-}
-
-//album tracks
-const getAlbumesTracks = async (req = request, res = response) => {
-  const config = await getAuthFromClientCredentials();
-
-  const album_id = req.params["id"];
-
-  axios.get(`https://api.spotify.com/v1/albums/${album_id}/tracks`, config)
-  .then((response) => {
-    const albumTracks = response.data;
-    console.log('Datos del album:', albumTracks);
-    res.status(200).json(albumTracks);
-  })
-  .catch((error) => {
-    res.status(404);
-    console.error('Error al obtener datos del album: ', error)
-  })
-
-}
+//Benja Genero
 
 const filterGenre = async (req = request, res = response) => {
   const config = await getAuthFromClientCredentials();
@@ -176,14 +140,68 @@ axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, confi
       console.error('Error al procesar su búsqueda', error);
       res.status(500).json({ error: 'Error al procesar su búsqueda' });
     });
-};
+    const axios = require('axios');
+  }
+     
 
-module.exports = {
-  getArtist, 
-  getPlaylistTracks,
-  getArtistAlbums,
-  getAlbumesTracks,
-  getAlbums,
-  filterGenre,
-  getTopArtists
-}
+
+    //artist albums canciones Emi
+    const getArtistAlbumes = async (req = request, res = response) => {    
+      const config = await getAuthFromClientCredentials();    
+      
+      const artist_Id = req.params['id'];
+      
+      axios.get(`https://api.spotify.com/v1/artists/${artist_Id}/albums`, config)
+          .then((response) => {
+              const albumTracksData = response.data;
+              console.log('Álbumes del artista:', albumTracksData);
+              res.status(200).json(albumTracksData);
+          })
+          .catch((error) => {
+              console.error('Error al obtener datos de los álbumes:', error);
+              res.status(500).json({ error: 'Error al obtener datos de los álbumes ' })
+          });
+  }
+  
+    
+    //album tracks (canciones del album de un artista se pasa el id del album ) Emi
+    const getAlbumTracks = async (req, res) => {
+      try {
+        // Obtener la configuración de autenticación
+        const config = await getAuthFromClientCredentials();
+        
+        // Verificar si se obtuvo la configuración
+        if (!config || !config.headers) {
+          throw new Error('Error al obtener la configuración de autenticación');
+        }
+    
+        // Obtener el ID del álbum desde los parámetros de la solicitud
+        const albumId = req.params.id;
+        
+        // Realizar la solicitud a la API de Spotify para obtener las pistas del álbum
+        const response = await axios.get(`https://api.spotify.com/v1/albums/${albumId}/tracks`, config);
+        
+        // Obtener los datos de las pistas del álbum de la respuesta
+        const albumTracks = response.data;
+        
+        // Enviar los datos de las pistas del álbum como respuesta
+        res.status(200).json(albumTracks);
+      } catch (error) {
+        // Manejar errores
+        console.error('Error al obtener datos del álbum:', error);
+        res.status(500).json({ error: 'Error al obtener datos del álbum' });
+      }
+    }
+
+
+  module.exports = {
+    getArtist,//Benja 
+    getPlaylistTracks,//Benja
+    getTopArtists,//Diego
+    getAlbums,//Diego
+    getArtistAlbumes,//Emi
+    getAlbumTracks,//Emi    
+    filterGenre,//Benja    
+  
+  }
+
