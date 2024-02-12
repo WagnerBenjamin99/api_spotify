@@ -140,7 +140,7 @@ axios.get(`https://api.spotify.com/v1/search?q=genre:${genre}&type=track`, confi
       console.error('Error al procesar su búsqueda', error);
       res.status(500).json({ error: 'Error al procesar su búsqueda' });
     });
-    const axios = require('axios');
+    
   }
      
 
